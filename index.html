@@ -10,8 +10,9 @@
 </head>
 
 <body>
+    <!-- NEW: Global Unified Background -->
+    <div class="global-bg"></div>
 
-    <!-- Smooth Scroll Container (Recommended for that Apple feel) -->
     <div id="scroll-container">
 
         <nav class="navbar">
@@ -23,7 +24,7 @@
             </ul>
         </nav>
 
-        <!-- --- HERO SECTION WITH PROFILE --- -->
+        <!-- --- HERO SECTION --- -->
         <header class="hero">
             <div class="parallax-bg" data-speed="0.2"></div>
             <div class="floating-glow glow-1"></div>
@@ -42,8 +43,6 @@
                 <div class="hero-content reveal fade-up delay-1">
 
                     <h1 class="parallax-text hero-title" data-speed="-0.1">
-
-
                         <span id="hero-heading" class="gradient-text">
                             Designing spaces that breath
                         </span>
@@ -61,74 +60,44 @@
             </div>
         </header>
 
+        <!-- --- ABOUT SECTION --- -->
         <section id="about" class="about-section">
-
             <div class="about-container">
-
                 <div class="about-intro reveal fade-up">
-
-                    <span class="about-tag">
-                        About Me
-                    </span>
-
-                    <h2 id="about-title">
-                        Loading...
-                    </h2>
-
-                    <p id="about-description">
-                        Loading...
-                    </p>
-
+                    <span class="about-tag">About Me</span>
+                    <h2 id="about-title">Loading...</h2>
+                    <p id="about-description">Loading...</p>
                 </div>
 
                 <div class="about-grid">
-
                     <div class="about-card reveal fade-up delay-1">
-
                         <h3>Education</h3>
-
                         <ul id="education-list"></ul>
-
                     </div>
 
                     <div class="about-card reveal fade-up delay-2">
-
                         <h3>Software Skills</h3>
-
                         <div class="skill-tags" id="software-list"></div>
-
                     </div>
 
                     <div class="about-card reveal fade-up">
-
                         <h3>Languages</h3>
-
                         <div class="skill-tags" id="language-list"></div>
-
                     </div>
 
                     <div class="about-card reveal fade-up delay-1">
-
                         <h3>Interests</h3>
-
                         <div class="skill-tags" id="interest-list"></div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </section>
 
-        <!-- --- SELECTED WORKS --- -->
         <!-- --- SELECTED WORKS --- -->
         <section id="work" class="portfolio">
             <div class="section-title reveal fade-up">
                 <h2>Selected Works</h2>
             </div>
-
-            <!-- Added ID dynamic-work-grid and removed the hardcoded items -->
             <div class="grid" id="dynamic-work-grid">
                 <!-- Data will be injected here by JavaScript -->
             </div>
@@ -136,49 +105,29 @@
 
         <!-- --- CONTACT SECTION --- -->
         <section id="contact" class="contact reveal fade-up">
-
             <div class="contact-content">
-
-                <span class="about-tag">
-                    Contact
-                </span>
-
-                <h2>
-                    Let's create something beautiful.
-                </h2>
-
-                <p>
-                    Connect through any platform below.
-                </p>
-
+                <span class="about-tag">Contact</span>
+                <h2>Let's create something beautiful.</h2>
+                <p>Connect through any platform below.</p>
                 <div class="contact-links" id="contact-links"></div>
-
             </div>
-
         </section>
 
-        <div class="gallery-modal" id="galleryModal">
-
-            <div class="gallery-container">
-
-                <span class="close-gallery">&times;</span>
-
-                <div class="gallery-header">
-
-                    <h2 id="modalTitle"></h2>
-
-                    <p id="modalDescription"></p>
-                    <div class="gallery-scroll" id="galleryScroll"></div>
-
-                </div>
-
-
-
-            </div>
-
+        <!-- --- MODAL --- -->
+        <!-- --- MODAL --- -->
+<div class="gallery-modal" id="galleryModal">
+    <div class="gallery-container">
+        <span class="close-gallery">&times;</span>
+        <div class="gallery-header">
+            <h2 id="modalTitle"></h2>
         </div>
+        
+        <!-- The JS will inject the descriptions and images in here -->
+        <div class="gallery-scroll" id="galleryScroll"></div>
+    </div>
+</div>
 
-    </div> <!-- End scroll-container -->
+    </div>
 
     <script src="script.js"></script>
 </body>

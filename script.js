@@ -264,46 +264,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function loadContactData() {
 
-    try {
+        try {
 
-        const contactUrl =
-            `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Contact`;
+            const contactUrl =
+                `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Contact`;
 
-        const response = await fetch(contactUrl);
+            const response = await fetch(contactUrl);
 
-        const text = await response.text();
+            const text = await response.text();
 
-        const jsonString = text.substring(
-            text.indexOf('{'),
-            text.lastIndexOf('}') + 1
-        );
+            const jsonString = text.substring(
+                text.indexOf('{'),
+                text.lastIndexOf('}') + 1
+            );
 
-        const data = JSON.parse(jsonString);
+            const data = JSON.parse(jsonString);
 
-        const rows = data.table.rows;
+            const rows = data.table.rows;
 
-        const container =
-            document.getElementById('contact-links');
+            const container =
+                document.getElementById('contact-links');
 
-        let html = '';
+            let html = '';
 
-        rows.forEach(row => {
+            rows.forEach(row => {
 
-            if (!row.c || !row.c[0]) return;
+                if (!row.c || !row.c[0]) return;
 
-            const name =
-                row.c[0]?.v || '';
+                const name =
+                    row.c[0]?.v || '';
 
-            const icon =
-                row.c[1]?.v || '';
+                const icon =
+                    row.c[1]?.v || '';
 
-            const value =
-                row.c[2]?.v || '';
+                const value =
+                    row.c[2]?.v || '';
 
-            const link =
-                row.c[3]?.v || '#';
+                const link =
+                    row.c[3]?.v || '#';
 
-            html += `
+                html += `
 
                 <a href="${link}"
                    target="_blank"
@@ -317,19 +317,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
             `;
 
-        });
+            });
 
-        container.innerHTML = html;
+            container.innerHTML = html;
 
-        lucide.createIcons();
+            lucide.createIcons();
 
-    } catch (error) {
+        } catch (error) {
 
-        console.error('Contact Data Error:', error);
+            console.error('Contact Data Error:', error);
+
+        }
 
     }
-
-}
 
     async function loadAboutData() {
 
@@ -516,39 +516,53 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalDescription = document.getElementById('modalDescription');
 
     document.addEventListener('click', (e) => {
-
         const project = e.target.closest('.grid-item');
-
         if (!project) return;
 
         const gallery = project.dataset.gallery;
 
+
         if (!gallery) return;
 
-        modalTitle.textContent =
-            project.dataset.title;
+        modalTitle.textContent = project.dataset.title;
 
-        modalDescription.textContent =
-            project.dataset.description;
-
+        // Reset the scroll container
         galleryScroll.innerHTML = '';
+
+        // 1. Add the Description as the first scrollable section
+        // 1. Add the Description as the first scrollable section
+        galleryScroll.innerHTML += `
+        <div class="gallery-section desc-section">
+            <p id="modalDescription">${project.dataset.description}</p>
+            
+            <!-- NEW: Animated Scroll Prompt -->
+            <div class="scroll-prompt">
+                <span>Scroll</span>
+                <div class="scroll-line"></div>
+            </div>
+        </div>
+    `;
 
         const images = gallery.split(',');
 
-        images.forEach(img => {
+        // 2. Build the CodePen Timeline Scopes dynamically 
+        let timelineScopes = images.map((_, i) => `--section-${i}`).join(', ');
+        galleryScroll.style.timelineScope = timelineScopes;
 
+        // 3. Loop through images and wrap them in the fixed timeline structure
+        images.forEach((img, index) => {
             galleryScroll.innerHTML += `
-            <img src="${img.trim()}">
+            <div class="gallery-section" style="view-timeline-name: --section-${index}">
+                <div class="gallery-content" style="animation-timeline: --section-${index}">
+                    <img src="${img.trim()}">
+                </div>
+            </div>
         `;
-
         });
 
         modal.classList.add('active');
-
         document.body.style.overflow = 'hidden';
-
     });
-
     closeGallery.addEventListener('click', () => {
 
         modal.classList.remove('active');
@@ -556,6 +570,55 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.style.overflow = 'auto';
 
     });
+
+    function initFireflies() {
+        const quantity = 15;
+
+        const container = document.createElement('div');
+        container.className = 'firefly-container';
+        container.style.position = 'fixed';
+        container.style.inset = '0';
+        container.style.pointerEvents = 'none';
+        container.style.zIndex = '-5';
+        document.body.appendChild(container);
+
+        let dynamicStyles = '';
+
+        for (let i = 1; i <= quantity; i++) {
+            const firefly = document.createElement('div');
+            firefly.className = 'firefly';
+            container.appendChild(firefly);
+
+            const steps = Math.floor(Math.random() * 12) + 16;
+
+            // SPEED: Increased these numbers to make the animation take longer (slower movement)
+            const rotationSpeed = Math.floor(Math.random() * 20) + 16; // Was 10 + 8
+            const flashDuration = Math.floor(Math.random() * 8000) + 7000; // Was 6000 + 5000
+            const flashDelay = Math.floor(Math.random() * 8000) + 500;
+
+            let keyframes = `@keyframes move${i} {`;
+            for (let step = 0; step <= steps; step++) {
+                const percentage = (step * (100 / steps)).toFixed(2);
+
+                // DISTANCE: Reduced travel distance so they don't zip across the screen as far
+                const translateX = Math.floor(Math.random() * 70) - 35; // Was 100 - 50
+                const translateY = Math.floor(Math.random() * 70) - 35; // Was 100 - 50
+                const scale = (Math.floor(Math.random() * 50) / 100) + 0.25; // Slightly smaller scaling
+
+                keyframes += `${percentage}% { transform: translateX(${translateX}vw) translateY(${translateY}vh) scale(${scale}); }`;
+            }
+            keyframes += '}';
+
+            dynamicStyles += keyframes;
+            dynamicStyles += `.firefly:nth-child(${i}) { animation-name: move${i}; }`;
+            dynamicStyles += `.firefly:nth-child(${i})::before { animation-duration: ${rotationSpeed}s; }`;
+            dynamicStyles += `.firefly:nth-child(${i})::after { animation-duration: ${rotationSpeed}s, ${flashDuration}ms; animation-delay: 0ms, ${flashDelay}ms; }`;
+        }
+
+        const style = document.createElement('style');
+        style.innerHTML = dynamicStyles;
+        document.head.appendChild(style);
+    }
 
 
 
@@ -566,4 +629,5 @@ document.addEventListener("DOMContentLoaded", () => {
     loadPortfolioData();
     loadHeroData();
     loadContactData();
+    initFireflies();
 });
